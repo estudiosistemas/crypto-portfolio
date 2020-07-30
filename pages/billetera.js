@@ -45,7 +45,7 @@ const CeldaPosicion = styled.div`
 
 const CONFIG_INICIAL = {
   api_key: null,
-  api_time_refresh: 5000,
+  api_time_refresh: 30000,
 };
 
 export default function Billetera() {
@@ -119,7 +119,7 @@ export default function Billetera() {
       const miConfig = {
         usuario: usuario.uid,
         api_key: null,
-        api_time_refresh: 5000,
+        api_time_refresh: 30000,
       };
       firebase.db.collection("configuracion").add(miConfig);
     }

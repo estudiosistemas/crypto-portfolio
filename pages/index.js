@@ -62,7 +62,7 @@ export default function Home() {
 
   useInterval(() => {
     buscoValor();
-  }, 5000);
+  }, 30000);
 
   useEffect(() => {
     buscoValor();
