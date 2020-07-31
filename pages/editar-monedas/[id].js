@@ -44,7 +44,7 @@ const Moneda = () => {
     setValores,
   } = useValidacion(STATE_INICIAL, validarCrearMoneda, editarMoneda);
 
-  const { nombre, sigla, cantidad, valorcompra, cotizacion } = valores;
+  const { id_API, nombre, sigla, cantidad, valorcompra, cotizacion } = valores;
 
   //context con operaciones crud de firebase
   const { usuario, firebase } = useContext(FirebaseContext);
@@ -57,6 +57,7 @@ const Moneda = () => {
 
     // creo el obj moneda
     const monedaUpdated = {
+      id_API,
       sigla,
       nombre,
       cantidad,
@@ -77,6 +78,7 @@ const Moneda = () => {
         if (moneda.exists) {
           setMoneda(moneda.data());
           setValores({
+            id_API: moneda.data().id_API,
             nombre: moneda.data().nombre,
             sigla: moneda.data().sigla,
             cantidad: moneda.data().cantidad,

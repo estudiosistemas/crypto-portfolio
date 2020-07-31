@@ -36,24 +36,22 @@ export default function Home() {
   const [listado, setListado] = useState([]);
 
   const buscoValor = () => {
-    //const api_key =
-    //  "d16bcd6c0b0f3181df076d62695fdc93680e578e55a423b52177c4f501fd4780";
     const url =
-      "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD"; //&api_key=${api_key}`;
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false";
 
     axios
       .get(url)
       .then((res) => {
-        const lista = res.data.Data.map((moneda) => ({
-          id: moneda.CoinInfo.Id,
-          logo: moneda.CoinInfo.ImageUrl,
-          sigla: moneda.CoinInfo.Name,
-          nombre: moneda.CoinInfo.FullName,
-          valor: moneda.DISPLAY.USD.PRICE,
-          valoralto24hs: moneda.DISPLAY.USD.HIGH24HOUR,
-          valorbajo24hs: moneda.DISPLAY.USD.LOW24HOUR,
-          cambio24hs: moneda.DISPLAY.USD.CHANGE24HOUR,
-          cambioporc24hs: moneda.DISPLAY.USD.CHANGEPCT24HOUR,
+        const lista = res.data.map((moneda) => ({
+          id: moneda.id,
+          logo: moneda.image,
+          sigla: moneda.symbol.toUpperCase(),
+          nombre: moneda.name,
+          valor: moneda.current_price,
+          valoralto24hs: moneda.high_24h,
+          valorbajo24hs: moneda.low_24h,
+          cambio24hs: moneda.price_change_24h,
+          cambioporc24hs: moneda.price_change_percentage_24h,
         }));
         setListado(lista);
       })
@@ -62,7 +60,7 @@ export default function Home() {
 
   useInterval(() => {
     buscoValor();
-  }, 30000);
+  }, 2000);
 
   useEffect(() => {
     buscoValor();
@@ -77,7 +75,7 @@ export default function Home() {
             <div className="bg-white">
               <Tabla>
                 <thead>
-                  <th>Moneda</th>
+                  <th colSpan="2">Moneda</th>
                   <th>Ultimo Precio</th>
                   <th>Cambio en 24 hs.</th>
                   <th>Máximo en 24 hs.</th>

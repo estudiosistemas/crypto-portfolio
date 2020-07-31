@@ -74,14 +74,14 @@ export default function Billetera() {
           .onSnapshot(manejarSnapshot);
       };
 
-      const obtenerConfig = async () => {
-        firebase.db
-          .collection("configuracion")
-          .where("usuario", "==", uid)
-          .onSnapshot(manejarSnapshotConfig);
-      };
+      // const obtenerConfig = async () => {
+      //   firebase.db
+      //     .collection("configuracion")
+      //     .where("usuario", "==", uid)
+      //     .onSnapshot(manejarSnapshotConfig);
+      // };
 
-      obtenerConfig();
+      //obtenerConfig();
       obtenerBilletera();
     }
   }, []);
@@ -91,7 +91,7 @@ export default function Billetera() {
     let miSiglas = "";
     const result = snapshot.docs.map((doc) => {
       sumacompra = sumacompra + parseFloat(doc.data().valorcompra);
-      miSiglas = miSiglas + doc.data().sigla + ",";
+      miSiglas = miSiglas + doc.data().id_API + ",";
       return {
         id: doc.id,
         ...doc.data(),
@@ -105,33 +105,33 @@ export default function Billetera() {
       setMensaje("No hay monedas Cargadas. Por favor diríjase a Cargar Moneda");
   }
 
-  function manejarSnapshotConfig(snapshot) {
-    const result = snapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      };
-    });
-    if (result[0]) {
-      setConfig(result[0]);
-    } else {
-      setConfig(CONFIG_INICIAL);
-      const miConfig = {
-        usuario: usuario.uid,
-        api_key: null,
-        api_time_refresh: 30000,
-      };
-      firebase.db.collection("configuracion").add(miConfig);
-    }
-  }
+  // function manejarSnapshotConfig(snapshot) {
+  //   const result = snapshot.docs.map((doc) => {
+  //     return {
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     };
+  //   });
+  //   if (result[0]) {
+  //     setConfig(result[0]);
+  //   } else {
+  //     setConfig(CONFIG_INICIAL);
+  //     const miConfig = {
+  //       usuario: usuario.uid,
+  //       api_key: null,
+  //       api_time_refresh: 30000,
+  //     };
+  //     firebase.db.collection("configuracion").add(miConfig);
+  //   }
+  // }
 
   useEffect(() => {
     if (siglas) buscoValor();
   }, [siglas]);
 
   useInterval(() => {
-    buscoValor();
-  }, config.api_time_refresh);
+    if (siglas) buscoValor();
+  }, 2000);
 
   useEffect(() => {
     const actualizoTotales = () => {
@@ -159,9 +159,10 @@ export default function Billetera() {
     const concatena = monedas.map((moneda) => {
       let cotUSDT = moneda.cotizacion;
       let cotBTC = 0;
-      if (valores[moneda.sigla] && moneda.cotizacion == 0) {
-        cotUSDT = valores[moneda.sigla].USDT;
-        cotBTC = valores[moneda.sigla].BTC;
+      const moneda_actual = valores.filter((el) => el.id == moneda.id_API);
+      if (moneda_actual.length > 0 && moneda.cotizacion == 0) {
+        cotUSDT = moneda_actual[0].current_price;
+        //cotBTC = valores[moneda.sigla].BTC;
       }
       const totalUSDT = moneda.cantidad * cotUSDT;
       const totalBTC = moneda.cantidad * cotBTC;
@@ -171,6 +172,7 @@ export default function Billetera() {
       }
       const elBilletera = {
         id: moneda.id,
+        id_API: moneda.id_API,
         sigla: moneda.sigla,
         nombre: moneda.nombre,
         cantidad: moneda.cantidad,
@@ -192,13 +194,7 @@ export default function Billetera() {
   };
 
   const buscoValor = () => {
-    let url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${siglas}&tsyms=USDT,BTC`;
-
-    if (config) {
-      if (config.api_key) {
-        url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${siglas}&tsyms=USDT,BTC&api_key=${config.api_key}`;
-      }
-    }
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${siglas}&order=market_cap_desc&per_page=100&page=1&sparkline=false`;
 
     axios
       .get(url)

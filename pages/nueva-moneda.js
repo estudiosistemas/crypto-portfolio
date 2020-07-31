@@ -13,7 +13,7 @@ import {
 import { FirebaseContext } from "../firebase";
 
 //hook cripto
-import useCriptomoneda from "../hooks/useCriptomoneda";
+import useCriptomonedaCG from "../hooks/useCriptomonedaCG";
 
 // validaciones
 import useValidacion from "../hooks/useValidacion";
@@ -31,7 +31,7 @@ const nuevaMoneda = () => {
   const [error, setError] = useState(false);
 
   // utilizar useCriptomoneda
-  const [criptomoneda, SelectCripto] = useCriptomoneda({});
+  const [criptomoneda, SelectCripto] = useCriptomonedaCG({});
 
   const {
     valores,
@@ -43,7 +43,7 @@ const nuevaMoneda = () => {
     setValores,
   } = useValidacion(STATE_INICIAL, validarCrearMoneda, crearMoneda);
 
-  const { nombre, sigla, cantidad, valorcompra, cotiza } = valores;
+  const { id_API, nombre, sigla, cantidad, valorcompra, cotiza } = valores;
 
   const router = useRouter();
 
@@ -59,6 +59,7 @@ const nuevaMoneda = () => {
     // creo el obj moneda
     const moneda = {
       usuario: usuario.uid,
+      id_API,
       sigla,
       nombre,
       cantidad,
@@ -76,8 +77,9 @@ const nuevaMoneda = () => {
   useEffect(() => {
     //console.log(criptomoneda);
     const miValor = {
-      sigla: criptomoneda.value,
-      nombre: criptomoneda.label,
+      id_API: criptomoneda.value,
+      sigla: criptomoneda.symbol,
+      nombre: criptomoneda.name,
       cantidad,
       valorcompra,
       cotiza,
