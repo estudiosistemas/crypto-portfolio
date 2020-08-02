@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
+import Select from "react-select";
 
 import Layout from "../components/layout/Layout";
 import { css } from "@emotion/core";
@@ -14,24 +15,31 @@ import { FirebaseContext } from "../firebase";
 
 //hook cripto
 import useCriptomonedaCG from "../hooks/useCriptomonedaCG";
+import useParCriptomoneda from "../hooks/useParCriptomoneda";
 
 // validaciones
 import useValidacion from "../hooks/useValidacion";
-import validarCrearMoneda from "../validacion/validarCrearMoneda";
+import validarCrearAlarma from "../validacion/validarCrearAlarma";
+
+const comparaOptions = [
+  { value: "mayor", label: "Mayor o Igual que" },
+  { value: "menor", label: "Menor o Igual que" },
+];
 
 const STATE_INICIAL = {
   nombre: "",
   sigla: "",
-  cantidad: 0,
-  valorcompra: 0,
-  cotiza: 0,
+  monedapar: "",
+  compara: [comparaOptions[0].value],
+  precioalarma: 0,
 };
 
-const nuevaMoneda = () => {
+const nuevaAlarma = () => {
   const [error, setError] = useState(false);
 
   // utilizar useCriptomoneda
   const [criptomoneda, SelectCripto] = useCriptomonedaCG({});
+  const [par, SelectPar] = useParCriptomoneda({});
 
   const {
     valores,
@@ -41,16 +49,16 @@ const nuevaMoneda = () => {
     handleSubmit,
     handleBlur,
     setValores,
-  } = useValidacion(STATE_INICIAL, validarCrearMoneda, crearMoneda);
+  } = useValidacion(STATE_INICIAL, validarCrearAlarma, crearAlarma);
 
-  const { id_API, nombre, sigla, cantidad, valorcompra, cotiza } = valores;
+  const { id_API, nombre, sigla, monedapar, compara, precioalarma } = valores;
 
   const router = useRouter();
 
   //context con operaciones crud de firebase
   const { usuario, firebase } = useContext(FirebaseContext);
 
-  async function crearMoneda() {
+  async function crearAlarma() {
     // Controlo que haya usuario logueado
     if (!usuario) {
       return router.push("/login");
@@ -62,15 +70,14 @@ const nuevaMoneda = () => {
       id_API,
       sigla,
       nombre,
-      cantidad,
-      valorcompra,
-      cotizacion: cotiza,
+      par: monedapar,
+      precioalarma,
+      compara,
       creado: Date.now(),
-      ordenes: [],
     };
 
     // inserto en DB
-    firebase.db.collection("billetera").add(moneda);
+    firebase.db.collection("alarmas").add(moneda);
     router.push("/billetera");
   }
 
@@ -80,13 +87,24 @@ const nuevaMoneda = () => {
       id_API: criptomoneda.value,
       sigla: criptomoneda.symbol,
       nombre: criptomoneda.name,
-      cantidad,
-      valorcompra,
-      cotiza,
+      compara,
+      precioalarma,
     };
-    console.log(miValor);
     setValores(miValor);
   }, [criptomoneda]);
+
+  useEffect(() => {
+    //console.log(criptomoneda);
+    const miValor = {
+      id_API,
+      sigla,
+      nombre,
+      monedapar: par.value,
+      compara,
+      precioalarma,
+    };
+    setValores(miValor);
+  }, [par]);
 
   return (
     <div>
@@ -98,7 +116,7 @@ const nuevaMoneda = () => {
               margin-top: 5rem;
             `}
           >
-            Cargar Moneda
+            Crear Alarma
           </h1>
           <Formulario onSubmit={handleSubmit} noValidate>
             <Campo>
@@ -123,7 +141,7 @@ const nuevaMoneda = () => {
               <input
                 type="text"
                 id="nombre"
-                placeholder="Tu Nombre"
+                placeholder="Nombre Criptomoneda"
                 name="nombre"
                 value={nombre}
                 onChange={handleChange}
@@ -132,43 +150,55 @@ const nuevaMoneda = () => {
             </Campo>
             {errores.nombre && <Error>{errores.nombre}</Error>}
             <Campo>
-              <label htmlFor="cantidad">Cantidad</label>
-              <input
-                type="number"
-                id="cantidad"
-                name="cantidad"
-                value={cantidad}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
+              <label>Par</label>
+              <SelectPar />
             </Campo>
-            {errores.cantidad && <Error>{errores.cantidad}</Error>}
+            {errores.monedapar && <Error>{errores.monedapar}</Error>}
+
+            <input
+              type="text"
+              id="monedapar"
+              placeholder="Par Sigla criptomoneda"
+              name="monedapar"
+              value={monedapar}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              hidden
+            />
             <Campo>
-              <label htmlFor="valorcompra">Valor Compra</label>
-              <input
-                type="number"
-                id="valorcompra"
-                name="valorcompra"
-                value={valorcompra}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
+              <label>Precio Cripto</label>
+              <div
+                css={css`
+                  flex: 1;
+                `}
+              >
+                <Select
+                  options={comparaOptions}
+                  onChange={(e) =>
+                    setValores({
+                      ...valores,
+                      compara: e.value,
+                    })
+                  }
+                  defaultValue={comparaOptions[0]}
+                  placeholder="Seleccione una opción..."
+                />
+              </div>
             </Campo>
-            {errores.valorcompra && <Error>{errores.valorcompra}</Error>}
             <Campo>
-              <label htmlFor="cotiza">Cotización</label>
+              <label htmlFor="precioalarma">Precio Alarma</label>
               <input
                 type="number"
-                id="cotiza"
-                name="cotiza"
-                value={cotiza}
+                id="precioalarma"
+                name="precioalarma"
+                value={precioalarma}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
             </Campo>
-            {errores.cotiza && <Error>{errores.cotiza}</Error>}
+            {errores.precioalarma && <Error>{errores.precioalarma}</Error>}
             {error && <Error>{error}</Error>}
-            <InputSubmit type="submit" value="Cargar Moneda" />
+            <InputSubmit type="submit" value="Crear Alarma" />
           </Formulario>
         </>
       </Layout>
@@ -176,4 +206,4 @@ const nuevaMoneda = () => {
   );
 };
 
-export default nuevaMoneda;
+export default nuevaAlarma;

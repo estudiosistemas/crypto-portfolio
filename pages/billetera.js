@@ -2,58 +2,18 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import Layout from "../components/layout/Layout";
 import ListadoMonedas from "../components/layout/ListadoMonedas";
-import styled from "@emotion/styled";
+import { Tabla, CeldaNumero, CeldaPosicion } from "../components/ui/Tabla";
 import NumberFormat from "react-number-format";
 import useInterval from "../hooks/useInterval";
 import { FirebaseContext } from "../firebase";
 import { useRouter } from "next/router";
-
-const Tabla = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-
-  tfoot {
-    background-color: var(--gris3);
-  }
-
-  th {
-    height: 50px;
-    background-color: var(--gris2);
-    color: white;
-  }
-
-  th,
-  td {
-    padding: 5px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-  tr:hover {
-    background-color: #f5f5f5;
-  }
-`;
-
-const CeldaNumero = styled.div`
-  text-align: right;
-`;
-
-const CeldaPosicion = styled.div`
-  text-align: right;
-  color: ${(props) => (props.positivo ? "green" : "red")};
-`;
-
-const CONFIG_INICIAL = {
-  api_key: null,
-  api_time_refresh: 30000,
-};
+import Alarmas from "../components/layout/Alarmas";
 
 export default function Billetera() {
   const [mensaje, setMensaje] = useState("Cargando...");
   const [billetera, setBilletera] = useState([]);
   const [monedas, setMonedas] = useState([]);
   const [valores, setValores] = useState({});
-  const [config, setConfig] = useState(CONFIG_INICIAL);
   const [siglas, setSiglas] = useState("");
   const [totales, setTotales] = useState({
     compra: 0,
@@ -74,14 +34,6 @@ export default function Billetera() {
           .onSnapshot(manejarSnapshot);
       };
 
-      // const obtenerConfig = async () => {
-      //   firebase.db
-      //     .collection("configuracion")
-      //     .where("usuario", "==", uid)
-      //     .onSnapshot(manejarSnapshotConfig);
-      // };
-
-      //obtenerConfig();
       obtenerBilletera();
     }
   }, []);
@@ -104,26 +56,6 @@ export default function Billetera() {
     if (result.length == 0)
       setMensaje("No hay monedas Cargadas. Por favor diríjase a Cargar Moneda");
   }
-
-  // function manejarSnapshotConfig(snapshot) {
-  //   const result = snapshot.docs.map((doc) => {
-  //     return {
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     };
-  //   });
-  //   if (result[0]) {
-  //     setConfig(result[0]);
-  //   } else {
-  //     setConfig(CONFIG_INICIAL);
-  //     const miConfig = {
-  //       usuario: usuario.uid,
-  //       api_key: null,
-  //       api_time_refresh: 30000,
-  //     };
-  //     firebase.db.collection("configuracion").add(miConfig);
-  //   }
-  // }
 
   useEffect(() => {
     if (siglas) buscoValor();
@@ -271,11 +203,7 @@ export default function Billetera() {
                 <tbody>
                   {billetera.length > 0 ? (
                     billetera.map((moneda, index) => (
-                      <ListadoMonedas
-                        key={index}
-                        indice={index}
-                        moneda={moneda}
-                      />
+                      <ListadoMonedas key={index} moneda={moneda} />
                     ))
                   ) : (
                     <tr>
@@ -284,6 +212,14 @@ export default function Billetera() {
                   )}
                 </tbody>
               </Tabla>
+            </div>
+          </div>
+
+          <div className="contenedor">
+            <h1>Alarmas</h1>
+
+            <div className="bg-white">
+              <Alarmas />
             </div>
           </div>
         </div>

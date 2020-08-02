@@ -33,12 +33,15 @@ const Navegacion = () => {
           <Link href="/nueva-moneda">
             <a>Cargar Moneda</a>
           </Link>
+          <Link href="/nueva-alarma">
+            <a>Crear Alarma</a>
+          </Link>
           <Link href="/libro-de-ordenes">
             <a>Libro de Ordenes</a>
           </Link>
-          <Link href="/editar-config[id]" as={`/editar-config/${usuario.uid}`}>
+          {/* <Link href="/editar-config[id]" as={`/editar-config/${usuario.uid}`}>
             <a>Configuración</a>
-          </Link>
+          </Link> */}
         </>
       )}
     </Nav>

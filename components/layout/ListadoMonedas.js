@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import NumberFormat from "react-number-format";
-
-import useInterval from "../../hooks/useInterval";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import Link from "next/link";
@@ -18,7 +15,7 @@ const CeldaPosicion = styled.div`
   color: ${(props) => (props.positivo ? "green" : "red")};
 `;
 
-const ListadoMonedas = ({ indice, moneda }) => {
+const ListadoMonedas = ({ moneda }) => {
   const {
     id,
     sigla,
@@ -37,6 +34,18 @@ const ListadoMonedas = ({ indice, moneda }) => {
     }
     try {
       await firebase.db.collection("billetera").doc(id).delete();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cargarCompra = async () => {
+    if (!usuario) {
+      return router.push("/login");
+    }
+    try {
+      //await firebase.db.collection("billetera").doc(id).delete();
+      console.log("comprando...");
     } catch (error) {
       console.log(error);
     }
@@ -114,7 +123,14 @@ const ListadoMonedas = ({ indice, moneda }) => {
           }
         />
       </td>
-      <td>{usuario && <button onClick={borrarMoneda}>Borrar</button>}</td>
+      <td>
+        {usuario && (
+          <>
+            <button onClick={borrarMoneda}>Borrar</button>
+            <button onClick={cargarCompra}>Comprar</button>
+          </>
+        )}
+      </td>
     </tr>
   );
 };

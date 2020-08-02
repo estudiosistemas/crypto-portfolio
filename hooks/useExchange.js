@@ -4,51 +4,53 @@ import { css } from "@emotion/core";
 import Select from "react-select";
 import axios from "axios";
 
-const useCriptomoneda = (stateInicial) => {
+const useExchange = (stateInicial) => {
   // console.log(opciones);
 
   // State de nuestro custom hook
   const [state, actualizarState] = useState(stateInicial);
   const [opciones, setOpciones] = useState([]);
+  const [pholder, setPholder] = useState("Cargando...");
 
   // Ejecutar llamado a la API
   useEffect(() => {
     const consultarAPI = async () => {
-      const url =
-        "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym=USD";
+      const url = "https://api.coingecko.com/api/v3/exchanges";
 
       axios
         .get(url)
         .then((res) => {
-          const lista = res.data.Data.map((moneda) => ({
-            value: moneda.CoinInfo.Name,
-            label: moneda.CoinInfo.FullName,
+          const lista = res.data.map((exchange) => ({
+            value: exchange.id,
+            label: exchange.name,
           }));
 
           setOpciones(lista);
+          setPholder("Seleccione un Exchange...");
         })
         .catch((err) => console.log(err));
     };
     consultarAPI();
   }, []);
 
-  const SelectCripto = () => (
+  const SelectExchange = () => (
     <div
       css={css`
         flex: 1;
       `}
     >
       <Select
+        noOptionsMessage={() => "Cargando..."}
         options={opciones}
         onChange={(e) => actualizarState(e)}
         value={state}
-        placeholder="Seleccione una criptomoneda..."
+        placeholder="Seleccione un Exchange..."
       />
     </div>
   );
 
   // Retornar state, interfaz y fn que modifica el state
-  return [state, SelectCripto, actualizarState];
+  return [state, SelectExchange, actualizarState];
 };
 
-export default useCriptomoneda;
+export default useExchange;
