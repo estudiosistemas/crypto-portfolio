@@ -39,17 +39,17 @@ const ListadoMonedas = ({ moneda }) => {
     }
   };
 
-  const cargarCompra = async () => {
-    if (!usuario) {
-      return router.push("/login");
-    }
-    try {
-      //await firebase.db.collection("billetera").doc(id).delete();
-      console.log("comprando...");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const cargarCompra = async () => {
+  //   if (!usuario) {
+  //     return router.push("/login");
+  //   }
+  //   try {
+  //     //await firebase.db.collection("billetera").doc(id).delete();
+  //     console.log("comprando...");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <tr>
@@ -127,7 +127,7 @@ const ListadoMonedas = ({ moneda }) => {
         {usuario && (
           <>
             <button onClick={borrarMoneda}>Borrar</button>
-            <button onClick={cargarCompra}>Comprar</button>
+            {/* <button onClick={cargarCompra}>Comprar</button> */}
           </>
         )}
       </td>

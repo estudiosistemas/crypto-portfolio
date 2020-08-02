@@ -8,7 +8,7 @@ import useInterval from "../../hooks/useInterval";
 import axios from "axios";
 
 const useAudio = (url) => {
-  const [audio] = useState(new Audio(url));
+  const [audio, setAudio] = useState({});
   const [playing, setPlaying] = useState(true);
   const [startalarm, setStartAlarm] = useState(false);
 
@@ -20,6 +20,7 @@ const useAudio = (url) => {
   }, [playing, startalarm]);
 
   useEffect(() => {
+    setAudio(new Audio(url));
     audio.addEventListener("ended", () => setPlaying(false));
     return () => {
       audio.removeEventListener("ended", () => setPlaying(false));
