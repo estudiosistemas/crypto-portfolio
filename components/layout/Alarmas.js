@@ -6,29 +6,7 @@ import { FirebaseContext } from "../../firebase";
 import { useRouter } from "next/router";
 import useInterval from "../../hooks/useInterval";
 import axios from "axios";
-
-const useAudio = (url) => {
-  const [audio, setAudio] = useState({});
-  const [playing, setPlaying] = useState(true);
-  const [startalarm, setStartAlarm] = useState(false);
-
-  const toggle = () => setPlaying(!playing);
-  const toggleStart = () => setStartAlarm(!startalarm);
-
-  useEffect(() => {
-    playing && startalarm ? audio.play() : audio.pause();
-  }, [playing, startalarm]);
-
-  useEffect(() => {
-    setAudio(new Audio(url));
-    audio.addEventListener("ended", () => setPlaying(false));
-    return () => {
-      audio.removeEventListener("ended", () => setPlaying(false));
-    };
-  }, []);
-
-  return [playing, startalarm, toggle, toggleStart, setStartAlarm];
-};
+import useSound from "use-sound";
 
 const Alarmas = () => {
   const [alarmasAPI, setAlarmasAPI] = useState([]);
@@ -41,9 +19,19 @@ const Alarmas = () => {
   const { usuario, firebase } = useContext(FirebaseContext);
   const router = useRouter();
 
-  const [playing, startalarm, toggle, toggleStart, setStartAlarm] = useAudio(
+  //state para sonido
+  const [play, { stop }] = useSound(
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
   );
+  const [playing, setPlaying] = useState(true);
+  const [startalarm, setStartAlarm] = useState(false);
+
+  const toggle = () => setPlaying(!playing);
+  const toggleStart = () => setStartAlarm(!startalarm);
+
+  useEffect(() => {
+    playing && startalarm ? play() : stop();
+  }, [playing, startalarm]);
 
   useEffect(() => {
     if (usuario) {

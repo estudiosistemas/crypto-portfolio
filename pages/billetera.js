@@ -7,7 +7,7 @@ import NumberFormat from "react-number-format";
 import useInterval from "../hooks/useInterval";
 import { FirebaseContext } from "../firebase";
 import { useRouter } from "next/router";
-//import Alarmas from "../components/layout/Alarmas";
+import Alarmas from "../components/layout/Alarmas";
 
 export default function Billetera() {
   const [mensaje, setMensaje] = useState("Cargando...");
@@ -215,13 +215,13 @@ export default function Billetera() {
             </div>
           </div>
 
-          {/* <div className="contenedor">
+          <div className="contenedor">
             <h1>Alarmas</h1>
 
             <div className="bg-white">
               <Alarmas />
             </div>
-          </div> */}
+          </div>
         </div>
       </Layout>
     </div>
