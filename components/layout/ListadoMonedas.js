@@ -39,17 +39,17 @@ const ListadoMonedas = ({ moneda }) => {
     }
   };
 
-  // const cargarCompra = async () => {
-  //   if (!usuario) {
-  //     return router.push("/login");
-  //   }
-  //   try {
-  //     //await firebase.db.collection("billetera").doc(id).delete();
-  //     console.log("comprando...");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const cargarCompra = async () => {
+    if (!usuario) {
+      return router.push("/login");
+    }
+    try {
+      //await firebase.db.collection("billetera").doc(id).delete();
+      console.log("comprando...");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <tr>
@@ -126,8 +126,31 @@ const ListadoMonedas = ({ moneda }) => {
       <td>
         {usuario && (
           <>
+            <Link href="/comprar-moneda[id]" as={`/comprar-moneda/${id}`}>
+              <a
+                css={css`
+                  text-decoration: none;
+                  color: blue;
+                  cursor: pointer;
+                  margin-right: 1rem;
+                `}
+              >
+                Comprar
+              </a>
+            </Link>
+            <Link href="/vender-moneda[id]" as={`/vender-moneda/${id}`}>
+              <a
+                css={css`
+                  text-decoration: none;
+                  color: blue;
+                  cursor: pointer;
+                  margin-right: 1rem;
+                `}
+              >
+                Vender
+              </a>
+            </Link>
             <button onClick={borrarMoneda}>Borrar</button>
-            {/* <button onClick={cargarCompra}>Comprar</button> */}
           </>
         )}
       </td>

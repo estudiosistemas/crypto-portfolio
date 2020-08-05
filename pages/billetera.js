@@ -11,6 +11,7 @@ import Alarmas from "../components/layout/Alarmas";
 
 export default function Billetera() {
   const [mensaje, setMensaje] = useState("Cargando...");
+  const [mostrarConCantidad, setMostrarConCantidad] = useState(false);
   const [billetera, setBilletera] = useState([]);
   const [monedas, setMonedas] = useState([]);
   const [valores, setValores] = useState({});
@@ -85,44 +86,50 @@ export default function Billetera() {
     if (Object.keys(valores).length != 0) {
       setBilletera(concatenarBilletera());
     }
-  }, [valores]);
+  }, [valores, mostrarConCantidad]);
 
   const concatenarBilletera = () => {
     const concatena = monedas.map((moneda) => {
-      let cotUSDT = moneda.cotizacion;
-      let cotBTC = 0;
-      const moneda_actual = valores.filter((el) => el.id == moneda.id_API);
-      if (moneda_actual.length > 0 && moneda.cotizacion == 0) {
-        cotUSDT = moneda_actual[0].current_price;
-        //cotBTC = valores[moneda.sigla].BTC;
+      if (
+        !mostrarConCantidad ||
+        (mostrarConCantidad && parseFloat(moneda.cantidad) > 0)
+      ) {
+        let cotUSDT = moneda.cotizacion;
+        let cotBTC = 0;
+        const moneda_actual = valores.filter((el) => el.id == moneda.id_API);
+        if (moneda_actual.length > 0 && moneda.cotizacion == 0) {
+          cotUSDT = moneda_actual[0].current_price;
+          //cotBTC = valores[moneda.sigla].BTC;
+        }
+        const totalUSDT = moneda.cantidad * cotUSDT;
+        const totalBTC = moneda.cantidad * cotBTC;
+        let posicionUSDT = 0;
+        if (totalUSDT > 0 && moneda.valorcompra > 0) {
+          posicionUSDT = (totalUSDT / moneda.valorcompra - 1) * 100;
+        }
+        const elBilletera = {
+          id: moneda.id,
+          id_API: moneda.id_API,
+          sigla: moneda.sigla,
+          nombre: moneda.nombre,
+          cantidad: moneda.cantidad,
+          valorcompra: moneda.valorcompra,
+          cotizacion: moneda.cotizacion,
+          valores: {
+            cotizacionUSDT: cotUSDT,
+            cotizacionBTC: cotBTC,
+            totalUSDT,
+            totalBTC,
+            posicionUSDT,
+            posicionBTC: 0,
+          },
+        };
+        return elBilletera;
       }
-      const totalUSDT = moneda.cantidad * cotUSDT;
-      const totalBTC = moneda.cantidad * cotBTC;
-      let posicionUSDT = 0;
-      if (totalUSDT > 0) {
-        posicionUSDT = (totalUSDT / moneda.valorcompra - 1) * 100;
-      }
-      const elBilletera = {
-        id: moneda.id,
-        id_API: moneda.id_API,
-        sigla: moneda.sigla,
-        nombre: moneda.nombre,
-        cantidad: moneda.cantidad,
-        valorcompra: moneda.valorcompra,
-        cotizacion: moneda.cotizacion,
-        valores: {
-          cotizacionUSDT: cotUSDT,
-          cotizacionBTC: cotBTC,
-          totalUSDT,
-          totalBTC,
-          posicionUSDT,
-          posicionBTC: 0,
-        },
-      };
-
-      return elBilletera;
     });
-    return concatena;
+    return concatena.filter(function (dato) {
+      return dato != undefined;
+    });
   };
 
   const buscoValor = () => {
@@ -136,6 +143,10 @@ export default function Billetera() {
       .catch((err) => console.log(err));
   };
 
+  const toggleMostrarConCantidad = () => {
+    setMostrarConCantidad(!mostrarConCantidad);
+  };
+
   return (
     <div>
       <Layout>
@@ -143,6 +154,14 @@ export default function Billetera() {
           <div className="contenedor">
             <h1>Billetera</h1>
             <div className="bg-white">
+              <label for="cbox1">Ocultar monedas sin balance {""}</label>
+              <input
+                type="checkbox"
+                id="cbox1"
+                value={mostrarConCantidad}
+                onChange={toggleMostrarConCantidad}
+              />
+
               <Tabla>
                 <thead>
                   <th>Moneda</th>

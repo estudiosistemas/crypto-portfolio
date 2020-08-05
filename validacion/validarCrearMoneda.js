@@ -9,9 +9,8 @@ export default function validarCrearMoneda(valores) {
     errores.nombre = "El Nombre es obligatorio";
   }
 
-  if (valores.valorcompra < 0 || valores.valorcompra == 0) {
-    errores.valorcompra =
-      "El valor de compra no puede ser 0 o un número negativo";
+  if (valores.valorcompra < 0) {
+    errores.valorcompra = "El valor de compra no puede un número negativo";
   }
 
   return errores;

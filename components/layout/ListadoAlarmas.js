@@ -19,8 +19,9 @@ const ListadoAlarmas = ({
     par,
     precioUSD,
     preciopar,
-    compara,
+    //compara,
     precioalarma,
+    preciostop,
   } = alarma;
 
   const [activada, setActivada] = useState(false);
@@ -39,21 +40,14 @@ const ListadoAlarmas = ({
   };
 
   useEffect(() => {
-    switch (compara[0]) {
-      case "mayor":
-        if (preciopar >= precioalarma) {
-          setStartAlarm(true);
-          setActivada(true);
-        }
-        break;
-      case "menor":
-        if (preciopar <= precioalarma) {
-          setStartAlarm(true);
-          setActivada(true);
-        }
-        break;
-      default:
-        break;
+    if (precioalarma > 0 && preciopar >= precioalarma) {
+      setStartAlarm(true);
+      setActivada(true);
+    }
+
+    if (preciostop > 0 && preciopar <= preciostop) {
+      setStartAlarm(true);
+      setActivada(true);
     }
   }, [preciopar]);
 
@@ -106,11 +100,21 @@ const ListadoAlarmas = ({
           fixedDecimalScale={true}
           renderText={(value) => (
             <CeldaNumero>
-              {compara == "mayor" ? (
-                <div>&uarr; {value}</div>
-              ) : (
-                <div>&darr; {value} </div>
-              )}
+              <div>&uarr; {value}</div>
+            </CeldaNumero>
+          )}
+        />
+      </td>
+      <td>
+        <NumberFormat
+          value={preciostop}
+          displayType={"text"}
+          thousandSeparator={true}
+          decimalScale={8}
+          fixedDecimalScale={true}
+          renderText={(value) => (
+            <CeldaNumero>
+              <div>&darr; {value} </div>
             </CeldaNumero>
           )}
         />

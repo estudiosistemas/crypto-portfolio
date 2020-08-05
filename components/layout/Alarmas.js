@@ -128,8 +128,9 @@ const Alarmas = () => {
         sigla: al.sigla,
         nombre: al.nombre,
         par: al.par,
-        compara: al.compara,
+        //compara: al.compara,
         precioalarma: parseFloat(al.precioalarma).toFixed(8),
+        preciostop: parseFloat(al.preciostop).toFixed(8),
         precioaUSD: cotUSDT,
         preciopar: cotPar,
       };
@@ -158,7 +159,8 @@ const Alarmas = () => {
         <thead>
           <th>Par</th>
           <th>Precio Actual</th>
-          <th>Precio Alarma</th>
+          <th>Precio Limit</th>
+          <th>Precio Stop Loss</th>
           <th>Acciones</th>
         </thead>
         <tbody>

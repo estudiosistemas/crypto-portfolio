@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import Select from "react-select";
+//import Select from "react-select";
 
 import Layout from "../components/layout/Layout";
 import { css } from "@emotion/core";
@@ -21,17 +21,18 @@ import useParCriptomoneda from "../hooks/useParCriptomoneda";
 import useValidacion from "../hooks/useValidacion";
 import validarCrearAlarma from "../validacion/validarCrearAlarma";
 
-const comparaOptions = [
-  { value: "mayor", label: "Mayor o Igual que" },
-  { value: "menor", label: "Menor o Igual que" },
-];
+// const comparaOptions = [
+//   { value: "mayor", label: "Mayor o Igual que" },
+//   { value: "menor", label: "Menor o Igual que" },
+// ];
 
 const STATE_INICIAL = {
   nombre: "",
   sigla: "",
   monedapar: "",
-  compara: [comparaOptions[0].value],
+  //compara: [comparaOptions[0].value],
   precioalarma: 0,
+  preciostop: 0,
 };
 
 const nuevaAlarma = () => {
@@ -51,7 +52,15 @@ const nuevaAlarma = () => {
     setValores,
   } = useValidacion(STATE_INICIAL, validarCrearAlarma, crearAlarma);
 
-  const { id_API, nombre, sigla, monedapar, compara, precioalarma } = valores;
+  const {
+    id_API,
+    nombre,
+    sigla,
+    monedapar,
+    //compara,
+    precioalarma,
+    preciostop,
+  } = valores;
 
   const router = useRouter();
 
@@ -64,20 +73,21 @@ const nuevaAlarma = () => {
       return router.push("/login");
     }
 
-    // creo el obj moneda
-    const moneda = {
+    // creo el obj alarma
+    const alarma = {
       usuario: usuario.uid,
       id_API,
       sigla,
       nombre,
       par: monedapar,
       precioalarma,
-      compara,
+      preciostop,
+      //compara,
       creado: Date.now(),
     };
 
     // inserto en DB
-    firebase.db.collection("alarmas").add(moneda);
+    firebase.db.collection("alarmas").add(alarma);
     router.push("/billetera");
   }
 
@@ -87,8 +97,9 @@ const nuevaAlarma = () => {
       id_API: criptomoneda.value,
       sigla: criptomoneda.symbol,
       nombre: criptomoneda.name,
-      compara,
+      //compara,
       precioalarma,
+      preciostop,
     };
     setValores(miValor);
   }, [criptomoneda]);
@@ -100,8 +111,9 @@ const nuevaAlarma = () => {
       sigla,
       nombre,
       monedapar: par.value,
-      compara,
+      //compara,
       precioalarma,
+      preciostop,
     };
     setValores(miValor);
   }, [par]);
@@ -165,7 +177,7 @@ const nuevaAlarma = () => {
               onBlur={handleBlur}
               hidden
             />
-            <Campo>
+            {/* <Campo>
               <label>Precio Cripto</label>
               <div
                 css={css`
@@ -184,9 +196,9 @@ const nuevaAlarma = () => {
                   placeholder="Seleccione una opción..."
                 />
               </div>
-            </Campo>
+            </Campo> */}
             <Campo>
-              <label htmlFor="precioalarma">Precio Alarma</label>
+              <label htmlFor="precioalarma">Precio Limit</label>
               <input
                 type="number"
                 id="precioalarma"
@@ -197,6 +209,18 @@ const nuevaAlarma = () => {
               />
             </Campo>
             {errores.precioalarma && <Error>{errores.precioalarma}</Error>}
+            <Campo>
+              <label htmlFor="preciostop">Precio StopLoss</label>
+              <input
+                type="number"
+                id="preciostop"
+                name="preciostop"
+                value={preciostop}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Campo>
+            {errores.preciostop && <Error>{errores.preciostop}</Error>}
             {error && <Error>{error}</Error>}
             <InputSubmit type="submit" value="Crear Alarma" />
           </Formulario>

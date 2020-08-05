@@ -81,6 +81,11 @@ export default function Home() {
                   <th>Máximo en 24 hs.</th>
                   <th>Mínimo en 24 hs.</th>
                 </thead>
+                <tfoot>
+                  <td colSpan="6">
+                    <small>Powered by CoinGecko API</small>
+                  </td>
+                </tfoot>
                 <tbody>
                   {listado.map((moneda) => (
                     <IndexListadoMonedas key={moneda.id} moneda={moneda} />
