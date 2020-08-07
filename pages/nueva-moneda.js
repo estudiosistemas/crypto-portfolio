@@ -1,13 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
 
-import Layout from "../components/layout/Layout";
+import Layout from "../components/layout-responsive/Layout";
 import { css } from "@emotion/core";
 import {
   Formulario,
   Campo,
   InputSubmit,
   Error,
+  Titulo,
 } from "../components/ui/Formulario";
 
 import { FirebaseContext } from "../firebase";
@@ -91,86 +95,112 @@ const nuevaMoneda = () => {
   return (
     <div>
       <Layout>
-        <>
-          <h1
-            css={css`
-              text-align: center;
-              margin-top: 5rem;
-            `}
-          >
-            Cargar Moneda
-          </h1>
-          <Formulario onSubmit={handleSubmit} noValidate>
-            <Campo>
-              <label>Criptomoneda</label>
-              <SelectCripto />
-            </Campo>
-            <Campo>
-              <label htmlFor="sigla">Sigla</label>
-              <input
-                type="text"
-                id="sigla"
-                placeholder="Sigla cryptomoneda"
-                name="sigla"
-                value={sigla}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.sigla && <Error>{errores.sigla}</Error>}
-            <Campo>
-              <label htmlFor="nombre">Nombre</label>
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Tu Nombre"
-                name="nombre"
-                value={nombre}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.nombre && <Error>{errores.nombre}</Error>}
-            <Campo>
-              <label htmlFor="cantidad">Cantidad</label>
-              <input
-                type="number"
-                id="cantidad"
-                name="cantidad"
-                value={cantidad}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.cantidad && <Error>{errores.cantidad}</Error>}
-            <Campo>
-              <label htmlFor="valorcompra">Valor Compra</label>
-              <input
-                type="number"
-                id="valorcompra"
-                name="valorcompra"
-                value={valorcompra}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.valorcompra && <Error>{errores.valorcompra}</Error>}
-            <Campo>
-              <label htmlFor="cotiza">Cotización</label>
-              <input
-                type="number"
-                id="cotiza"
-                name="cotiza"
-                value={cotiza}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.cotiza && <Error>{errores.cotiza}</Error>}
-            {error && <Error>{error}</Error>}
-            <InputSubmit type="submit" value="Cargar Moneda" />
-          </Formulario>
-        </>
+        <div className="listado-productos">
+          <div className="contenedor">
+            <Titulo>Cargar Moneda</Titulo>
+            <Formulario noValidate>
+              <Campo>
+                <label>Criptomoneda</label>
+                <SelectCripto />
+              </Campo>
+              <Campo>
+                <label htmlFor="sigla">Sigla</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.sigla && true}
+                  id="sigla"
+                  name="sigla"
+                  value={sigla}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.sigla}
+                  variant="outlined"
+                  size="small"
+                />
+              </Campo>
+
+              <Campo>
+                <label htmlFor="nombre">Nombre</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.nombre && true}
+                  id="nombre"
+                  name="nombre"
+                  value={nombre}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.nombre}
+                  variant="outlined"
+                  size="small"
+                />
+              </Campo>
+              <Campo>
+                <label htmlFor="cantidad">Cantidad</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.cantidad && true}
+                  id="cantidad"
+                  name="cantidad"
+                  value={cantidad}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.cantidad}
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                />
+              </Campo>
+
+              <Campo>
+                <label htmlFor="valorcompra">Valor Compra</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.valorcompra && true}
+                  id="valorcompra"
+                  name="valorcompra"
+                  value={valorcompra}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.valorcompra}
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                />
+              </Campo>
+              <Campo>
+                <label htmlFor="cotiza">Cotización</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.cotiza && true}
+                  id="cotiza"
+                  name="cotiza"
+                  value={cotiza}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.cotiza}
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                />
+              </Campo>
+              {error && (
+                <Alert variant="filled" severity="error">
+                  {error}
+                </Alert>
+              )}
+              <Campo>
+                <Button
+                  onClick={handleSubmit}
+                  variant="contained"
+                  color="primary"
+                  style={{ width: "100%" }}
+                >
+                  Cargar Moneda
+                </Button>
+              </Campo>
+            </Formulario>
+          </div>
+        </div>
       </Layout>
     </div>
   );

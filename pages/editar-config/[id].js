@@ -3,7 +3,7 @@ import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import { css } from "@emotion/core";
 import { FirebaseContext } from "../../firebase";
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layout-responsive/Layout";
 import Error404 from "../../components/layout/404";
 import {
   Formulario,

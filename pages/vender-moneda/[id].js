@@ -5,13 +5,19 @@ import { css } from "@emotion/core";
 import { FirebaseContext } from "../../firebase";
 import axios from "axios";
 import { formatDate } from "../../functions/funciones";
-import Layout from "../../components/layout/Layout";
+
+import Layout from "../../components/layout-responsive/Layout";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
+
 import Error404 from "../../components/layout/404";
 import {
   Formulario,
   Campo,
   InputSubmit,
   Error,
+  Titulo,
 } from "../../components/ui/Formulario";
 // validaciones
 import useValidacion from "../../hooks/useValidacion";
@@ -127,7 +133,8 @@ const VenderMoneda = () => {
         ).toFixed(8),
       };
 
-      firebase.db.collection("billetera").doc(compra.par_id).update(parUpdated);
+      firebase.db.collection("billetera").doc(venta.par_id).update(parUpdated);
+      console.log("actualizo par");
       // vuelvo a la billetera
       router.push("/billetera");
     } catch (error) {
@@ -183,142 +190,175 @@ const VenderMoneda = () => {
   return (
     <Layout>
       {errorBuscar && <Error404 />}
-      <h1
-        css={css`
-          text-align: center;
-          margin-top: 5rem;
-        `}
-      >
-        Vender {moneda_sigla}
-      </h1>
-      <Formulario onSubmit={handleSubmit} noValidate>
-        <Campo>
-          <label htmlFor="moneda_sigla">Sigla</label>
-          <input
-            type="text"
-            id="moneda_sigla"
-            placeholder="Sigla cryptomoneda"
-            name="moneda_sigla"
-            value={moneda_sigla}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            disabled
-          />
-        </Campo>
-        {errores.moneda_sigla && <Error>{errores.moneda_sigla}</Error>}
-        <Campo>
-          <label htmlFor="nombre">Nombre</label>
-          <input
-            type="text"
-            id="nombre"
-            placeholder="Tu Nombre"
-            name="nombre"
-            value={nombre}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            disabled
-          />
-        </Campo>
-        {errores.nombre && <Error>{errores.nombre}</Error>}
-        <Campo>
-          <label>Par</label>
-          <SelectPar />
-        </Campo>
-        {errores.monedapar && <Error>{errores.monedapar}</Error>}
+      <div className="listado-productos">
+        <div className="contenedor">
+          <Titulo>Vender {moneda_sigla}</Titulo>
+          <Formulario noValidate>
+            <Campo>
+              <label htmlFor="moneda_sigla">Sigla</label>
+              <TextField
+                style={{ flex: "1" }}
+                id="moneda_sigla"
+                name="moneda_sigla"
+                value={moneda_sigla}
+                variant="outlined"
+                size="small"
+                disabled
+              />
+            </Campo>
+            <Campo>
+              <label htmlFor="nombre">Nombre</label>
+              <TextField
+                style={{ flex: "1" }}
+                id="nombre"
+                name="nombre"
+                value={nombre}
+                variant="outlined"
+                size="small"
+                disabled
+              />
+            </Campo>
+            <Campo>
+              <label>Par</label>
+              <SelectPar />
+            </Campo>
+            {errores.monedapar && (
+              <Alert variant="filled" severity="error">
+                {errores.monedapar}
+              </Alert>
+            )}
 
-        <input
-          type="text"
-          id="monedapar"
-          placeholder="Par Sigla criptomoneda"
-          name="monedapar"
-          value={monedapar}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          hidden
-        />
-        <Campo>
-          <label htmlFor="disponible">Disponible</label>
-          <input
-            type="number"
-            id="disponible"
-            name="disponible"
-            value={disponible}
-            disabled
-          />
-        </Campo>
-        <input
-          type="number"
-          id="monedapar_cotizaUSD"
-          name="monedapar_cotizaUSD"
-          value={monedapar_cotizaUSD}
-          hidden
-        />
+            <input
+              type="text"
+              id="monedapar"
+              placeholder="Par Sigla criptomoneda"
+              name="monedapar"
+              value={monedapar}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              hidden
+            />
+            <Campo>
+              <label htmlFor="disponible">Disponible</label>
+              <TextField
+                style={{ flex: "1" }}
+                id="disponible"
+                name="disponible"
+                value={disponible}
+                variant="outlined"
+                size="small"
+                disabled
+              />
+            </Campo>
+            <input
+              type="number"
+              id="monedapar_cotizaUSD"
+              name="monedapar_cotizaUSD"
+              value={monedapar_cotizaUSD}
+              hidden
+            />
 
-        <Campo>
-          <label htmlFor="fecha">Fecha</label>
-          <input
-            type="date"
-            id="fecha"
-            name="fecha"
-            value={fecha}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.fecha && <Error>{errores.fecha}</Error>}
+            <Campo>
+              <label htmlFor="fecha">Fecha</label>
+              <TextField
+                style={{ flex: "1" }}
+                type="date"
+                error={errores.fecha && true}
+                id="fecha"
+                name="fecha"
+                value={fecha}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.fecha}
+                variant="outlined"
+                size="small"
+              />
+            </Campo>
+            {errores.fecha && <Error>{errores.fecha}</Error>}
 
-        <Campo>
-          <label htmlFor="precio">Precio</label>
-          <input
-            type="number"
-            id="precio"
-            name="precio"
-            value={precio}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.precio && <Error>{errores.precio}</Error>}
+            <Campo>
+              <label htmlFor="precio">Precio</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.precio && true}
+                id="precio"
+                name="precio"
+                value={precio}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.precio}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
 
-        <Campo>
-          <label htmlFor="cantidad">Cantidad</label>
-          <input
-            type="number"
-            id="cantidad"
-            name="cantidad"
-            value={cantidad}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.cantidad && <Error>{errores.cantidad}</Error>}
-        <Campo>
-          <label htmlFor="total">Total</label>
-          <input
-            type="number"
-            id="total"
-            name="total"
-            value={total}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.total && <Error>{errores.total}</Error>}
-        <Campo>
-          <label htmlFor="totalUSD">Total USD</label>
-          <input
-            type="number"
-            id="totalUSD"
-            name="totalUSD"
-            value={totalUSD}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.totalUSD && <Error>{errores.totalUSD}</Error>}
-        {error && <Error>{error}</Error>}
-        <InputSubmit type="submit" value="Guardar Compra" />
-      </Formulario>
+            <Campo>
+              <label htmlFor="cantidad">Cantidad</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.cantidad && true}
+                id="cantidad"
+                name="cantidad"
+                value={cantidad}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.cantidad}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
+            <Campo>
+              <label htmlFor="total">Total</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.total && true}
+                id="total"
+                name="total"
+                value={total}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.total}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
+            <Campo>
+              <label htmlFor="totalUSD">Total USD</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.totalUSD && true}
+                id="totalUSD"
+                name="totalUSD"
+                value={totalUSD}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.totalUSD}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
+            {error && (
+              <Alert variant="filled" severity="error">
+                {error}
+              </Alert>
+            )}
+            <Campo>
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                color="primary"
+                style={{ width: "100%" }}
+              >
+                Guardar Venta
+              </Button>
+            </Campo>
+          </Formulario>
+        </div>
+      </div>
     </Layout>
   );
 };

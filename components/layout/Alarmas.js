@@ -152,9 +152,11 @@ const Alarmas = () => {
 
   return (
     <div>
-      <Boton bgColor="true" onClick={toggle}>
+      {/* <Boton bgColor="true" onClick={toggle}>
         {playing ? "Desactivar Alarmas" : "Activar Alarmas"}
-      </Boton>
+      </Boton> */}
+      <label for="cbox2">Alarmas Desactivadas {""}</label>
+      <input type="checkbox" id="cbox2" value={playing} onChange={toggle} />
       <Tabla>
         <thead>
           <th>Par</th>

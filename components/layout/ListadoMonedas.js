@@ -39,21 +39,9 @@ const ListadoMonedas = ({ moneda }) => {
     }
   };
 
-  const cargarCompra = async () => {
-    if (!usuario) {
-      return router.push("/login");
-    }
-    try {
-      //await firebase.db.collection("billetera").doc(id).delete();
-      console.log("comprando...");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <tr>
-      <td>
+      <td data-th="Moneda">
         <Link href="/editar-monedas[id]" as={`/editar-monedas/${id}`}>
           <a
             css={css`
@@ -66,7 +54,7 @@ const ListadoMonedas = ({ moneda }) => {
           </a>
         </Link>
       </td>
-      <td>
+      <td data-th="Cantidad">
         <NumberFormat
           value={cantidad}
           displayType={"text"}
@@ -76,7 +64,7 @@ const ListadoMonedas = ({ moneda }) => {
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
       </td>
-      <td>
+      <td data-th="Cotización USD">
         <NumberFormat
           value={valores.cotizacionUSDT}
           displayType={"text"}
@@ -86,7 +74,7 @@ const ListadoMonedas = ({ moneda }) => {
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
       </td>
-      <td>
+      <td data-th="Valor Compra">
         <NumberFormat
           value={valorcompra}
           displayType={"text"}
@@ -96,7 +84,7 @@ const ListadoMonedas = ({ moneda }) => {
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
       </td>
-      <td>
+      <td data-th="Valor Actual">
         <NumberFormat
           value={valores.totalUSDT}
           displayType={"text"}
@@ -106,7 +94,7 @@ const ListadoMonedas = ({ moneda }) => {
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
       </td>
-      <td>
+      <td data-th="Posición">
         <NumberFormat
           value={valores.posicionUSDT}
           displayType={"text"}
@@ -123,7 +111,7 @@ const ListadoMonedas = ({ moneda }) => {
           }
         />
       </td>
-      <td>
+      <td data-th="Acciones">
         {usuario && (
           <>
             <Link href="/comprar-moneda[id]" as={`/comprar-moneda/${id}`}>

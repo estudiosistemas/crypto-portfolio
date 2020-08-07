@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../components/layout/Layout";
+import Layout from "../components/layout-responsive/Layout";
 import styled from "@emotion/styled";
 
 export default function LibroDeOrdenes() {

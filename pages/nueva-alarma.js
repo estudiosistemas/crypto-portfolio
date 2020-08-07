@@ -1,14 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-//import Select from "react-select";
 
-import Layout from "../components/layout/Layout";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
+
+import Layout from "../components/layout-responsive/Layout";
 import { css } from "@emotion/core";
 import {
   Formulario,
   Campo,
   InputSubmit,
   Error,
+  Titulo,
 } from "../components/ui/Formulario";
 
 import { FirebaseContext } from "../firebase";
@@ -121,110 +125,116 @@ const nuevaAlarma = () => {
   return (
     <div>
       <Layout>
-        <>
-          <h1
-            css={css`
-              text-align: center;
-              margin-top: 5rem;
-            `}
-          >
-            Crear Alarma
-          </h1>
-          <Formulario onSubmit={handleSubmit} noValidate>
-            <Campo>
-              <label>Criptomoneda</label>
-              <SelectCripto />
-            </Campo>
-            <Campo>
-              <label htmlFor="sigla">Sigla</label>
-              <input
-                type="text"
-                id="sigla"
-                placeholder="Sigla cryptomoneda"
-                name="sigla"
-                value={sigla}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.sigla && <Error>{errores.sigla}</Error>}
-            <Campo>
-              <label htmlFor="nombre">Nombre</label>
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Nombre Criptomoneda"
-                name="nombre"
-                value={nombre}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.nombre && <Error>{errores.nombre}</Error>}
-            <Campo>
-              <label>Par</label>
-              <SelectPar />
-            </Campo>
-            {errores.monedapar && <Error>{errores.monedapar}</Error>}
-
-            <input
-              type="text"
-              id="monedapar"
-              placeholder="Par Sigla criptomoneda"
-              name="monedapar"
-              value={monedapar}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              hidden
-            />
-            {/* <Campo>
-              <label>Precio Cripto</label>
-              <div
-                css={css`
-                  flex: 1;
-                `}
-              >
-                <Select
-                  options={comparaOptions}
-                  onChange={(e) =>
-                    setValores({
-                      ...valores,
-                      compara: e.value,
-                    })
-                  }
-                  defaultValue={comparaOptions[0]}
-                  placeholder="Seleccione una opción..."
+        <div className="listado-productos">
+          <div className="contenedor">
+            <Titulo>Crear Alarma</Titulo>
+            <Formulario noValidate>
+              <Campo>
+                <label>Criptomoneda</label>
+                <SelectCripto />
+              </Campo>
+              <Campo>
+                <label htmlFor="sigla">Sigla</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.sigla && true}
+                  id="sigla"
+                  name="sigla"
+                  value={sigla}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.sigla}
+                  variant="outlined"
+                  size="small"
                 />
-              </div>
-            </Campo> */}
-            <Campo>
-              <label htmlFor="precioalarma">Precio Limit</label>
+              </Campo>
+
+              <Campo>
+                <label htmlFor="nombre">Nombre</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.nombre && true}
+                  id="nombre"
+                  name="nombre"
+                  value={nombre}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.nombre}
+                  variant="outlined"
+                  size="small"
+                />
+              </Campo>
+              <Campo>
+                <label>Par</label>
+                <SelectPar />
+              </Campo>
+              {errores.monedapar && (
+                <Alert variant="filled" severity="error">
+                  {errores.monedapar}
+                </Alert>
+              )}
+
               <input
-                type="number"
-                id="precioalarma"
-                name="precioalarma"
-                value={precioalarma}
+                type="text"
+                id="monedapar"
+                placeholder="Par Sigla criptomoneda"
+                name="monedapar"
+                value={monedapar}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                hidden
               />
-            </Campo>
-            {errores.precioalarma && <Error>{errores.precioalarma}</Error>}
-            <Campo>
-              <label htmlFor="preciostop">Precio StopLoss</label>
-              <input
-                type="number"
-                id="preciostop"
-                name="preciostop"
-                value={preciostop}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.preciostop && <Error>{errores.preciostop}</Error>}
-            {error && <Error>{error}</Error>}
-            <InputSubmit type="submit" value="Crear Alarma" />
-          </Formulario>
-        </>
+              <Campo>
+                <label htmlFor="precioalarma">Precio Limit</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.precioalarma && true}
+                  id="precioalarma"
+                  name="precioalarma"
+                  value={precioalarma}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.precioalarma}
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                />
+              </Campo>
+              <Campo>
+                <label htmlFor="preciostop">Precio StopLoss</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.preciostop && true}
+                  id="preciostop"
+                  name="preciostop"
+                  value={preciostop}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.preciostop}
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                />
+              </Campo>
+
+              {error && (
+                <Alert variant="filled" severity="error">
+                  {error}
+                </Alert>
+              )}
+              <Campo>
+                <Button
+                  onClick={handleSubmit}
+                  variant="contained"
+                  color="primary"
+                  style={{ width: "100%" }}
+                >
+                  Crear Alarma
+                </Button>
+              </Campo>
+            </Formulario>
+          </div>
+        </div>
       </Layout>
     </div>
   );

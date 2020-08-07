@@ -13,8 +13,8 @@ const CeldaPosicion = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
 `;
 
 const IndexListadoMonedas = ({ moneda }) => {
@@ -32,13 +32,13 @@ const IndexListadoMonedas = ({ moneda }) => {
 
   return (
     <tr>
-      <td>
+      <td data-th="Logo">
         <Logo src={logo} alt="Img" />
       </td>
-      <td>
+      <td data-th="Moneda">
         {sigla} {nombre}
       </td>
-      <td>
+      <td data-th="Ultimo Precio">
         <NumberFormat
           value={valor}
           displayType={"text"}
@@ -48,7 +48,7 @@ const IndexListadoMonedas = ({ moneda }) => {
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
       </td>
-      <td>
+      <td data-th="Cambio 24 hs.">
         <NumberFormat
           value={cambioporc24hs}
           displayType={"text"}
@@ -65,7 +65,7 @@ const IndexListadoMonedas = ({ moneda }) => {
           }
         />
       </td>
-      <td>
+      <td data-th="Máximo 24 hs.">
         <NumberFormat
           value={valoralto24hs}
           displayType={"text"}
@@ -75,7 +75,7 @@ const IndexListadoMonedas = ({ moneda }) => {
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
       </td>
-      <td>
+      <td data-th="Mínimo 24 hs.">
         <NumberFormat
           value={valorbajo24hs}
           displayType={"text"}

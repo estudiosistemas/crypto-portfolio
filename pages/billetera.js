@@ -1,8 +1,9 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
-import Layout from "../components/layout/Layout";
+import Layout from "../components/layout-responsive/Layout";
 import ListadoMonedas from "../components/layout/ListadoMonedas";
 import { Tabla, CeldaNumero, CeldaPosicion } from "../components/ui/Tabla";
+import Titulo from "../components/ui/Titulo";
 import NumberFormat from "react-number-format";
 import useInterval from "../hooks/useInterval";
 import { FirebaseContext } from "../firebase";
@@ -152,7 +153,7 @@ export default function Billetera() {
       <Layout>
         <div className="listado-productos">
           <div className="contenedor">
-            <h1>Billetera</h1>
+            <Titulo>Billetera</Titulo>
             <div className="bg-white">
               <label for="cbox1">Ocultar monedas sin balance {""}</label>
               <input
@@ -235,7 +236,7 @@ export default function Billetera() {
           </div>
 
           <div className="contenedor">
-            <h1>Alarmas</h1>
+            <Titulo>Alarmas</Titulo>
 
             <div className="bg-white">
               <Alarmas />

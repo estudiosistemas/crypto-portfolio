@@ -1,35 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
-import Layout from "../components/layout/Layout";
+//import Layout from "../components/layout/Layout";
+import Layout from "../components/layout-responsive/Layout";
 import axios from "axios";
 import styled from "@emotion/styled";
 import useInterval from "../hooks/useInterval";
 import IndexListadoMonedas from "../components/layout/IndexListadoMonedas";
-
-const Tabla = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-
-  tfoot {
-    background-color: var(--gris3);
-  }
-
-  th {
-    height: 50px;
-    background-color: var(--gris2);
-    color: white;
-  }
-
-  th,
-  td {
-    padding: 5px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-  tr:hover {
-    background-color: #f5f5f5;
-  }
-`;
+import { Tabla } from "../components/ui/Tabla";
 
 export default function Home() {
   //const { id, sigla, nombre, cantidad } = moneda;
@@ -37,7 +13,7 @@ export default function Home() {
 
   const buscoValor = () => {
     const url =
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false";
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false";
 
     axios
       .get(url)
@@ -71,7 +47,7 @@ export default function Home() {
       <Layout>
         <div className="listado-productos">
           <div className="contenedor">
-            <h1>Inicio</h1>
+            {/* <h2>Inicio</h2> */}
             <div className="bg-white">
               <Tabla>
                 <thead>

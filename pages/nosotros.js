@@ -1,12 +1,16 @@
 import React from "react";
-import Layout from "../components/layout/Layout";
-import styled from "@emotion/styled";
+import Layout from "../components/layout-responsive/Layout";
+import { Titulo } from "../components/ui/Formulario";
 
 export default function Nosotros() {
   return (
     <div>
       <Layout>
-        <h1>Nosotros</h1>
+        <div className="listado-productos">
+          <div className="contenedor">
+            <Titulo>Nosotros</Titulo>
+          </div>
+        </div>
       </Layout>
     </div>
   );

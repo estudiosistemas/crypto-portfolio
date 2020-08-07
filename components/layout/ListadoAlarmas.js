@@ -17,7 +17,7 @@ const ListadoAlarmas = ({
     sigla,
     nombre,
     par,
-    precioUSD,
+    precioaUSD,
     preciopar,
     //compara,
     precioalarma,
@@ -58,20 +58,10 @@ const ListadoAlarmas = ({
 
   return (
     <tr>
-      <td>
-        {/* <Link href="/editar-monedas[id]" as={`/editar-monedas/${id}`}>
-          <a
-            css={css`
-              text-decoration: none;
-              color: blue;
-              cursor: pointer;
-            `}
-          > */}
+      <td data-th="Par">
         {sigla}/{par.toUpperCase()}
-        {/* </a>
-        </Link> */}
       </td>
-      <td>
+      <td data-th="Precio Actual">
         <NumberFormat
           value={preciopar}
           displayType={"text"}
@@ -80,18 +70,8 @@ const ListadoAlarmas = ({
           fixedDecimalScale={true}
           renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
         />
-        <small>
-          <NumberFormat
-            value={precioUSD}
-            displayType={"text"}
-            thousandSeparator={true}
-            decimalScale={8}
-            fixedDecimalScale={true}
-            renderText={(value) => <CeldaNumero>{value}</CeldaNumero>}
-          />
-        </small>
       </td>
-      <td>
+      <td data-th="Limit">
         <NumberFormat
           value={precioalarma}
           displayType={"text"}
@@ -105,7 +85,7 @@ const ListadoAlarmas = ({
           )}
         />
       </td>
-      <td>
+      <td data-th="StopLoss">
         <NumberFormat
           value={preciostop}
           displayType={"text"}
@@ -119,7 +99,7 @@ const ListadoAlarmas = ({
           )}
         />
       </td>
-      <td>
+      <td data-th="Acciones">
         {usuario && (
           <button onClick={toogleActivada}>
             {activada ? "Cancelar Alarma" : "Alarma Activa"}

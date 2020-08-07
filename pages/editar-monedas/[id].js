@@ -4,13 +4,19 @@ import Link from "next/link";
 import { css } from "@emotion/core";
 import { FirebaseContext } from "../../firebase";
 
-import Layout from "../../components/layout/Layout";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
+
+import Layout from "../../components/layout-responsive/Layout";
+
 import Error404 from "../../components/layout/404";
 import {
   Formulario,
   Campo,
   InputSubmit,
   Error,
+  Titulo,
 } from "../../components/ui/Formulario";
 // validaciones
 import useValidacion from "../../hooks/useValidacion";
@@ -96,85 +102,108 @@ const Moneda = () => {
   return (
     <Layout>
       {errorBuscar && <Error404 />}
-      <Link href="/billetera">
-        <a>Volver</a>
-      </Link>
+      <div className="listado-productos">
+        <div className="contenedor">
+          <Titulo>Editar Moneda</Titulo>
+          <Formulario noValidate>
+            <Campo>
+              <label htmlFor="sigla">Sigla</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.sigla && true}
+                id="sigla"
+                name="sigla"
+                value={sigla}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.sigla}
+                variant="outlined"
+                size="small"
+              />
+            </Campo>
 
-      <h1
-        css={css`
-          text-align: center;
-          margin-top: 5rem;
-        `}
-      >
-        Editar Moneda
-      </h1>
-      <Formulario onSubmit={handleSubmit} noValidate>
-        <Campo>
-          <label htmlFor="sigla">Sigla</label>
-          <input
-            type="text"
-            id="sigla"
-            placeholder="Sigla cryptomoneda"
-            name="sigla"
-            value={sigla}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            autoFocus
-          />
-        </Campo>
-        {errores.sigla && <Error>{errores.sigla}</Error>}
-        <Campo>
-          <label htmlFor="nombre">Nombre</label>
-          <input
-            type="text"
-            id="nombre"
-            placeholder="Tu Nombre"
-            name="nombre"
-            value={nombre}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.nombre && <Error>{errores.nombre}</Error>}
-        <Campo>
-          <label htmlFor="cantidad">Cantidad</label>
-          <input
-            type="number"
-            id="cantidad"
-            name="cantidad"
-            value={cantidad}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.cantidad && <Error>{errores.cantidad}</Error>}
-        <Campo>
-          <label htmlFor="valorcompra">Valor Compra</label>
-          <input
-            type="number"
-            id="valorcompra"
-            name="valorcompra"
-            value={valorcompra}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.valorcompra && <Error>{errores.valorcompra}</Error>}
-        <Campo>
-          <label htmlFor="cotizacion">Cotización</label>
-          <input
-            type="number"
-            id="cotizacion"
-            name="cotizacion"
-            value={cotizacion}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </Campo>
-        {errores.cotizacion && <Error>{errores.cotizacion}</Error>}
-        {error && <Error>{error}</Error>}
-        <InputSubmit type="submit" value="Guardar Cambios" />
-      </Formulario>
+            <Campo>
+              <label htmlFor="nombre">Nombre</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.nombre && true}
+                id="nombre"
+                name="nombre"
+                value={nombre}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.nombre}
+                variant="outlined"
+                size="small"
+              />
+            </Campo>
+            <Campo>
+              <label htmlFor="cantidad">Cantidad</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.cantidad && true}
+                id="cantidad"
+                name="cantidad"
+                value={cantidad}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.cantidad}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
+
+            <Campo>
+              <label htmlFor="valorcompra">Valor Compra</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.valorcompra && true}
+                id="valorcompra"
+                name="valorcompra"
+                value={valorcompra}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.valorcompra}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
+            <Campo>
+              <label htmlFor="cotizacion">Cotización</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.cotizacion && true}
+                id="cotizacion"
+                name="cotizacion"
+                value={cotizacion}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.cotizacion}
+                variant="outlined"
+                size="small"
+                type="number"
+              />
+            </Campo>
+            {error && (
+              <Alert variant="filled" severity="error">
+                {error}
+              </Alert>
+            )}
+            <Campo>
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                color="primary"
+                style={{ width: "100%" }}
+              >
+                Guardar Cambios
+              </Button>
+            </Campo>
+          </Formulario>
+        </div>
+      </div>
     </Layout>
   );
 };

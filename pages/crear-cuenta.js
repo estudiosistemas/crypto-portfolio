@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import Router from "next/router";
-import Layout from "../components/layout/Layout";
-import { css } from "@emotion/core";
+import Layout from "../components/layout-responsive/Layout";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
+
 import {
   Formulario,
   Campo,
   InputSubmit,
   Error,
+  Titulo,
 } from "../components/ui/Formulario";
 
 import firebase from "../firebase";
@@ -47,59 +51,74 @@ export default function CrearCuenta() {
   return (
     <div>
       <Layout>
-        <>
-          <h1
-            css={css`
-              text-align: center;
-              margin-top: 5rem;
-            `}
-          >
-            Crear Cuenta
-          </h1>
-          <Formulario onSubmit={handleSubmit} noValidate>
-            <Campo>
-              <label htmlFor="nombre">Nombre</label>
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Tu Nombre"
-                name="nombre"
-                value={nombre}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.nombre && <Error>{errores.nombre}</Error>}
-            <Campo>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Tu Email"
-                name="email"
-                value={email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.email && <Error>{errores.email}</Error>}
-            <Campo>
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Tu Password"
-                name="password"
-                value={password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Campo>
-            {errores.password && <Error>{errores.password}</Error>}
-            {error && <Error>{error}</Error>}
-            <InputSubmit type="submit" value="Crear Cuenta" />
-          </Formulario>
-        </>
+        <div className="listado-productos">
+          <div className="contenedor">
+            <Titulo>Crear Cuenta</Titulo>
+            <Formulario noValidate>
+              <Campo>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.nombre && true}
+                  label="Nombre"
+                  id="nombre"
+                  name="nombre"
+                  value={nombre}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.nombre}
+                  size="small"
+                />{" "}
+              </Campo>
+              <Campo>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.email && true}
+                  label="Email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.email}
+                  size="small"
+                />
+              </Campo>
+
+              <Campo>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.password && true}
+                  type="password"
+                  label="password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.password}
+                  autoComplete="current-password"
+                  size="small"
+                />
+              </Campo>
+
+              {error && (
+                <Alert variant="filled" severity="error">
+                  {error}
+                </Alert>
+              )}
+              <Campo>
+                <Button
+                  onClick={handleSubmit}
+                  variant="contained"
+                  color="primary"
+                  style={{ width: "100%" }}
+                >
+                  Crear Cuenta
+                </Button>
+              </Campo>
+            </Formulario>
+          </div>
+        </div>
       </Layout>
     </div>
   );
