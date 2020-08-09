@@ -12,7 +12,7 @@ import Alarmas from "../components/layout/Alarmas";
 
 export default function Billetera() {
   const [mensaje, setMensaje] = useState("Cargando...");
-  const [mostrarConCantidad, setMostrarConCantidad] = useState(false);
+  const [mostrarConCantidad, setMostrarConCantidad] = useState(true);
   const [billetera, setBilletera] = useState([]);
   const [monedas, setMonedas] = useState([]);
   const [valores, setValores] = useState({});
@@ -159,7 +159,7 @@ export default function Billetera() {
               <input
                 type="checkbox"
                 id="cbox1"
-                value={mostrarConCantidad}
+                checked={mostrarConCantidad}
                 onChange={toggleMostrarConCantidad}
               />
 

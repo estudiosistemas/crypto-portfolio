@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 //import Layout from "../components/layout/Layout";
 import Layout from "../components/layout-responsive/Layout";
+import TopCards from "../components/layout-responsive/TopCards";
 import axios from "axios";
 import styled from "@emotion/styled";
 import useInterval from "../hooks/useInterval";
@@ -13,7 +14,7 @@ export default function Home() {
 
   const buscoValor = () => {
     const url =
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false";
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=false";
 
     axios
       .get(url)
@@ -46,6 +47,7 @@ export default function Home() {
     <div>
       <Layout>
         <div className="listado-productos">
+          <TopCards monedas={listado.slice(0, 4)} />
           <div className="contenedor">
             {/* <h2>Inicio</h2> */}
             <div className="bg-white">

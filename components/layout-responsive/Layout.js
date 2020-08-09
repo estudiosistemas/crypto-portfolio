@@ -3,6 +3,7 @@ import Header from "./Header";
 import { Global, css } from "@emotion/core";
 import Head from "next/head";
 import Link from "next/link";
+import Footer from "./Footer";
 
 const Layout = (props) => {
   return (
@@ -488,22 +489,30 @@ const Layout = (props) => {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Roboto:wght@300;400;500;700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
         <link href="/static/css/app.css" rel="stylesheet" />
-        <script
+        <link
+          rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+          integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+          crossOrigin="anonymous"
+        ></link>
+        {/* <script
           src="https://kit.fontawesome.com/64d58efce2.js"
           crossorigin="anonymous"
-        ></script>
+        ></script> */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Header />
       <main>
-        <section>
+        {props.children}
+        {/* <section>
           <div className="overlay">{props.children}</div>
-        </section>
+        </section> */}
       </main>
+      <Footer />
     </>
   );
 };
