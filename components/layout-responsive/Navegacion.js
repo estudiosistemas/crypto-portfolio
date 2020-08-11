@@ -35,6 +35,11 @@ const Navegacion = () => {
                       </Link>
                     </li>
                     {/* <li className="dropdown-link">
+                      <Link href="/libro-ordenes">
+                        <a>Libro de Ordenes</a>
+                      </Link>
+                    </li> */}
+                    {/* <li className="dropdown-link">
                       <a href="#">
                         Link 3<i className="fas fa-caret-down"></i>
                       </a>

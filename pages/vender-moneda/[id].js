@@ -4,7 +4,7 @@ import Link from "next/link";
 import { css } from "@emotion/core";
 import { FirebaseContext } from "../../firebase";
 import axios from "axios";
-import { formatDate } from "../../functions/funciones";
+import { getNowDateTimeStr } from "../../functions/funciones";
 
 import Layout from "../../components/layout-responsive/Layout";
 import TextField from "@material-ui/core/TextField";
@@ -31,7 +31,7 @@ const STATE_INICIAL = {
   moneda_sigla: "",
   moneda_cantidad: 0,
   moneda_valorcompra: 0,
-  fecha: formatDate(Date.now()),
+  fecha: getNowDateTimeStr(),
   monedapar: "",
   disponible: 0,
   cantidad: 0,
@@ -262,11 +262,11 @@ const VenderMoneda = () => {
               <label htmlFor="fecha">Fecha</label>
               <TextField
                 style={{ flex: "1" }}
-                type="date"
+                type="datetime-local"
                 error={errores.fecha && true}
                 id="fecha"
                 name="fecha"
-                value={fecha}
+                defaultValue={fecha}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 helperText={errores.fecha}

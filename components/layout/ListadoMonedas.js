@@ -5,6 +5,10 @@ import { css } from "@emotion/core";
 import Link from "next/link";
 import { FirebaseContext } from "../../firebase";
 import { useRouter } from "next/router";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Typography from "@material-ui/core/Typography";
 
 const CeldaNumero = styled.div`
   text-align: right;
@@ -39,20 +43,54 @@ const ListadoMonedas = ({ moneda }) => {
     }
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleModificar = () => {
+    router.push("/editar-monedas[id]", `/editar-monedas/${id}`);
+    setAnchorEl(null);
+  };
+
+  const handleOrdenes = () => {
+    router.push("/libro-ordenes[id]", `/libro-ordenes/${id}`);
+    setAnchorEl(null);
+  };
+
   return (
     <tr>
       <td data-th="Moneda">
-        <Link href="/editar-monedas[id]" as={`/editar-monedas/${id}`}>
-          <a
-            css={css`
-              text-decoration: none;
-              color: blue;
-              cursor: pointer;
-            `}
-          >
-            {sigla} {nombre}
-          </a>
-        </Link>
+        <div
+          css={css`
+            color: blue;
+            cursor: pointer;
+          `}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleOpen}
+        >
+          {sigla} {nombre}
+        </div>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleModificar}>
+            <Typography variant="caption">Modificar {sigla}</Typography>{" "}
+          </MenuItem>
+          <MenuItem onClick={handleOrdenes}>
+            <Typography variant="caption">Libro de Ordenes {sigla}</Typography>
+          </MenuItem>
+        </Menu>
       </td>
       <td data-th="Cantidad">
         <NumberFormat

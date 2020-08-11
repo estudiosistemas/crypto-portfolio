@@ -68,3 +68,7 @@ export const CeldaPosicion = styled.div`
   text-align: right;
   color: ${(props) => (props.positivo ? "green" : "red")};
 `;
+
+export const CeldaColor = styled.div`
+  color: ${(props) => (props.verde ? "green" : "red")};
+`;

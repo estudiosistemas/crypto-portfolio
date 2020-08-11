@@ -11,3 +11,22 @@ export function formatDate(date) {
 
   return [year, month, day].join("-");
 }
+
+export function getNowDateTimeStr() {
+  var now = new Date();
+  var hour = now.getHours(); // - (now.getHours() >= 12 ? 12 : 0);
+  return [
+    [
+      now.getFullYear(),
+      AddZero(now.getMonth() + 1),
+      AddZero(now.getDate()),
+    ].join("-"),
+    [AddZero(hour), AddZero(now.getMinutes())].join(":"),
+    //now.getHours() >= 12 ? "PM" : "AM",
+  ].join("T");
+}
+
+//Pad given value to the left with "0"
+function AddZero(num) {
+  return num >= 0 && num < 10 ? "0" + num : num + "";
+}

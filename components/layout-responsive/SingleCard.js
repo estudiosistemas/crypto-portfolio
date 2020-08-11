@@ -45,8 +45,6 @@ const SingleCard = ({ moneda }) => {
     cambioporc24hs,
   } = moneda;
 
-  console.log(moneda);
-
   return (
     <Grid item xs>
       <Card className={classes.root} variant="outlined">

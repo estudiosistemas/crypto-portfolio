@@ -4,6 +4,7 @@ import { CeldaNumero } from "../ui/Tabla";
 import Link from "next/link";
 import { FirebaseContext } from "../../firebase";
 import { useRouter } from "next/router";
+import { css } from "@emotion/core";
 
 const ListadoAlarmas = ({
   alarma,
@@ -59,7 +60,17 @@ const ListadoAlarmas = ({
   return (
     <tr>
       <td data-th="Par">
-        {sigla}/{par.toUpperCase()}
+        <Link href="/editar-alarma[id]" as={`/editar-alarma/${id}`}>
+          <a
+            css={css`
+              text-decoration: none;
+              color: blue;
+              cursor: pointer;
+            `}
+          >
+            {sigla}/{par.toUpperCase()}{" "}
+          </a>
+        </Link>
       </td>
       <td data-th="Precio Actual">
         <NumberFormat

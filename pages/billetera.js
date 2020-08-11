@@ -38,7 +38,7 @@ export default function Billetera() {
 
       obtenerBilletera();
     }
-  }, []);
+  }, [usuario]);
 
   function manejarSnapshot(snapshot) {
     let sumacompra = 0;

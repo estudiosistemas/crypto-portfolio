@@ -21,7 +21,7 @@ export default function validarCrearMoneda(valores) {
     errores.preciostop = "El Stop Loss no puede ser un número negativo";
   }
 
-  if (valores.preciostop > valores.precioalarma) {
+  if (valores.precioalarma > 0 && valores.preciostop > valores.precioalarma) {
     errores.preciostop = "El Stop Loss no puede ser mayor que el Limit";
   }
 

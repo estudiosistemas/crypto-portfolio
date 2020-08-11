@@ -46,7 +46,7 @@ const Alarmas = () => {
 
       obtenerAlarmas();
     }
-  }, []);
+  }, [usuario]);
 
   function manejarSnapshotAlarmas(snapshot) {
     let miSiglas = "bitcoin,ethereum,binancecoin,";
