@@ -28,6 +28,7 @@ const STATE_INICIAL = {
   cantidad: 0,
   valorcompra: 0,
   cotizacion: 0,
+  exchange: "",
 };
 
 const Moneda = () => {
@@ -50,7 +51,15 @@ const Moneda = () => {
     setValores,
   } = useValidacion(STATE_INICIAL, validarCrearMoneda, editarMoneda);
 
-  const { id_API, nombre, sigla, cantidad, valorcompra, cotizacion } = valores;
+  const {
+    id_API,
+    nombre,
+    sigla,
+    cantidad,
+    valorcompra,
+    cotizacion,
+    exchange,
+  } = valores;
 
   //context con operaciones crud de firebase
   const { usuario, firebase } = useContext(FirebaseContext);
@@ -69,6 +78,7 @@ const Moneda = () => {
       cantidad,
       valorcompra,
       cotizacion,
+      exchange,
     };
 
     // inserto en DB
@@ -90,6 +100,7 @@ const Moneda = () => {
             cantidad: moneda.data().cantidad,
             valorcompra: moneda.data().valorcompra,
             cotizacion: moneda.data().cotizacion,
+            exchange: moneda.data().exchange,
           });
         } else {
           setErrorBuscar(true);
@@ -184,6 +195,21 @@ const Moneda = () => {
                 variant="outlined"
                 size="small"
                 type="number"
+              />
+            </Campo>
+            <Campo>
+              <label htmlFor="exchange">Exchange/Wallet</label>
+              <TextField
+                style={{ flex: "1" }}
+                error={errores.exchange && true}
+                id="exchange"
+                name="exchange"
+                value={exchange}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errores.exchange}
+                variant="outlined"
+                size="small"
               />
             </Campo>
             {error && (

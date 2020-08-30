@@ -9,6 +9,7 @@ import useInterval from "../hooks/useInterval";
 import { FirebaseContext } from "../firebase";
 import { useRouter } from "next/router";
 import Alarmas from "../components/layout/Alarmas";
+//import Noticias from "../components/layout/Noticias";
 
 export default function Billetera() {
   const [mensaje, setMensaje] = useState("Cargando...");
@@ -124,6 +125,7 @@ export default function Billetera() {
             posicionUSDT,
             posicionBTC: 0,
           },
+          exchange: moneda.exchange,
         };
         return elBilletera;
       }
@@ -171,6 +173,7 @@ export default function Billetera() {
                   <th>Valor Compra USDT</th>
                   <th>Valor Actual USDT</th>
                   <th>Posición</th>
+                  <th>Exchange/Wallet</th>
                   <th>Acciones</th>
                 </thead>
                 <tfoot>
@@ -218,6 +221,7 @@ export default function Billetera() {
                       />
                     </td>
                     <td></td>
+                    <td></td>
                   </tr>
                 </tfoot>
                 <tbody>
@@ -227,13 +231,21 @@ export default function Billetera() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="7">{mensaje}</td>
+                      <td colSpan="8">{mensaje}</td>
                     </tr>
                   )}
                 </tbody>
               </Tabla>
             </div>
           </div>
+
+          {/* <div className="contenedor">
+            <Titulo>Noticias</Titulo>
+
+            <div className="bg-white">
+              <Noticias />
+            </div>
+          </div> */}
 
           <div className="contenedor">
             <Titulo>Alarmas</Titulo>

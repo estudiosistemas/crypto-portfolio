@@ -29,6 +29,7 @@ const STATE_INICIAL = {
   cantidad: 0,
   valorcompra: 0,
   cotiza: 0,
+  exchange: "",
 };
 
 const nuevaMoneda = () => {
@@ -47,7 +48,15 @@ const nuevaMoneda = () => {
     setValores,
   } = useValidacion(STATE_INICIAL, validarCrearMoneda, crearMoneda);
 
-  const { id_API, nombre, sigla, cantidad, valorcompra, cotiza } = valores;
+  const {
+    id_API,
+    nombre,
+    sigla,
+    cantidad,
+    valorcompra,
+    cotiza,
+    exchange,
+  } = valores;
 
   const router = useRouter();
 
@@ -69,6 +78,7 @@ const nuevaMoneda = () => {
       cantidad,
       valorcompra,
       cotizacion: cotiza,
+      exchange,
       creado: Date.now(),
       ordenes: [],
     };
@@ -87,8 +97,9 @@ const nuevaMoneda = () => {
       cantidad,
       valorcompra,
       cotiza,
+      exchange,
     };
-    console.log(miValor);
+    //console.log(miValor);
     setValores(miValor);
   }, [criptomoneda]);
 
@@ -181,6 +192,21 @@ const nuevaMoneda = () => {
                   variant="outlined"
                   size="small"
                   type="number"
+                />
+              </Campo>
+              <Campo>
+                <label htmlFor="exchange">Exchange/Wallet</label>
+                <TextField
+                  style={{ flex: "1" }}
+                  error={errores.exchange && true}
+                  id="exchange"
+                  name="exchange"
+                  value={exchange}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errores.exchange}
+                  variant="outlined"
+                  size="small"
                 />
               </Campo>
               {error && (

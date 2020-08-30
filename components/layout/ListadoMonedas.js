@@ -28,6 +28,7 @@ const ListadoMonedas = ({ moneda }) => {
     valorcompra,
     cotizacion,
     valores,
+    exchange,
   } = moneda;
   const { usuario, firebase } = useContext(FirebaseContext);
   const router = useRouter();
@@ -149,6 +150,7 @@ const ListadoMonedas = ({ moneda }) => {
           }
         />
       </td>
+      <td data-th="Exchange/Wallet">{exchange}</td>
       <td data-th="Acciones">
         {usuario && (
           <>
